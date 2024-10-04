@@ -4,16 +4,16 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') or ''
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
-    BLOB_ACCOUNT = os.environ.get('BLOB_ACCOUNT') or ''
-    BLOB_STORAGE_KEY = os.environ.get('BLOB_STORAGE_KEY') or ''
-    BLOB_CONTAINER = os.environ.get('BLOB_CONTAINER') or ''
+    BLOB_ACCOUNT = os.environ.get('BLOB_ACCOUNT')
+    BLOB_STORAGE_KEY = os.environ.get('BLOB_STORAGE_KEY')
+    BLOB_CONTAINER = os.environ.get('BLOB_CONTAINER')
 
-    SQL_SERVER = os.environ.get('SQL_SERVER') or ''
-    SQL_DATABASE = os.environ.get('SQL_DATABASE') or ''
-    SQL_USER_NAME = os.environ.get('SQL_USER_NAME') or ''
-    SQL_PASSWORD = os.environ.get('SQL_PASSWORD') or ''
+    SQL_SERVER = os.environ.get('SQL_SERVER')
+    SQL_DATABASE = os.environ.get('SQL_DATABASE')
+    SQL_USER_NAME = os.environ.get('SQL_USER_NAME')
+    SQL_PASSWORD = os.environ.get('SQL_PASSWORD') 
     # Below URI may need some adjustments for driver version, based on your OS, if running locally
     SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://' + SQL_USER_NAME + '@' + SQL_SERVER + ':' + SQL_PASSWORD + '@' + SQL_SERVER + ':1433/' + SQL_DATABASE  + '?driver=ODBC+Driver+17+for+SQL+Server'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -21,7 +21,7 @@ class Config(object):
     AUTHORITY = "https://login.microsoftonline.com/common"  # For multi-tenant app, else put tenant name
     # AUTHORITY = "https://login.microsoftonline.com/Enter_the_Tenant_Name_Here"
 
-    CLIENT_ID = os.environ.get('CLIENT_ID') or ''
+    CLIENT_ID = os.environ.get('CLIENT_ID')
 
     ### Info for MS Authentication ###
     ### As adapted from: https://github.com/Azure-Samples/ms-identity-python-webapp ###
@@ -33,7 +33,7 @@ class Config(object):
     # if not CLIENT_SECRET:
     #     raise ValueError("Need to define CLIENT_SECRET environment variable")
 
-    REDIRECT_PATH = "https://udacitycms-hsggc0fbb9cpfyav.australiaeast-01.azurewebsites.net/getAToken"  # Used to form an absolute URL; must match to app's redirect_uri set in AAD
+    REDIRECT_PATH = os.environ.get('REDIRECT_PATH')  # Used to form an absolute URL; must match to app's redirect_uri set in AAD
 
     # You can find the proper permission names from this document
     # https://docs.microsoft.com/en-us/graph/permissions-reference
