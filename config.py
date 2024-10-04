@@ -17,20 +17,22 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://' + SQL_USER_NAME + '@' + SQL_SERVER + ':' + SQL_PASSWORD + '@' + SQL_SERVER + ':1433/' + SQL_DATABASE  + '?driver=ODBC+Driver+17+for+SQL+Server'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    AUTHORITY = "https://login.microsoftonline.com/common"  # For multi-tenant app, else put tenant name
+    # AUTHORITY = "https://login.microsoftonline.com/Enter_the_Tenant_Name_Here"
+
     ### Info for MS Authentication ###
     ### As adapted from: https://github.com/Azure-Samples/ms-identity-python-webapp ###
     #CLIENT_SECRET = "ENTER_CLIENT_SECRET_HERE"
     # In your production app, Microsoft recommends you to use other ways to store your secret,
     # such as KeyVault, or environment variable as described in Flask's documentation here:
     # https://flask.palletsprojects.com/en/1.1.x/config/#configuring-from-environment-variables
-     CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-    if not CLIENT_SECRET:
-        raise ValueError("Need to define CLIENT_SECRET environment variable")
+    # CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+    # if not CLIENT_SECRET:
+    #    raise ValueError("Need to define CLIENT_SECRET environment variable")
 
-    AUTHORITY = "https://login.microsoftonline.com/common"  # For multi-tenant app, else put tenant name
-    # AUTHORITY = "https://login.microsoftonline.com/Enter_the_Tenant_Name_Here"
-
-    CLIENT_ID = os.getenv("CLIENT_ID")
+    CLIENT_ID = os.getenv.get("CLIENT_ID")
+    
+    CLIENT_SECRET = os.getenv.get("CLIENT_SECRET")
 
     REDIRECT_PATH = "https://udacitycms-hsggc0fbb9cpfyav.australiaeast-01.azurewebsites.net/getAToken"  # Used to form an absolute URL; must match to app's redirect_uri set in AAD
 
