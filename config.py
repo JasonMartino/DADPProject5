@@ -35,6 +35,12 @@ class Config(object):
 
     REDIRECT_PATH = "/getAToken"  # Used to form an absolute URL; must match to app's redirect_uri set in AAD
 
+    print(f"CLIENT_ID: {Config.CLIENT_ID}")
+    print(f"CLIENT_SECRET: {Config.CLIENT_SECRET}")
+    print(f"REDIRECT_URI: {Config.REDIRECT_URI}")
+    print(f"LOGOUT_URI: {Config.LOGOUT_URI}")
+
+    
    # You can find the proper permission names from this document
     # https://docs.microsoft.com/en-us/graph/permissions-reference
     SCOPE = ["User.Read"] # Only need to read user profile for this app
