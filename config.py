@@ -11,10 +11,9 @@ class Config(object):
 
     SQL_SERVER = os.environ.get('SQL_SERVER') or 'ENTER_SQL_SERVER_NAME.database.windows.net'
     SQL_DATABASE = os.environ.get('SQL_DATABASE') or 'ENTER_SQL_DB_NAME'
-    SQL_USER_NAME = os.environ.get('SQL_USER_NAME') or 'ENTER_SQL_SERVER_USERNAME'
+    SQL_user = os.environ.get('SQL_user') or 'ENTER_SQL_SERVER_USERNAME'
     SQL_PASSWORD = os.environ.get('SQL_PASSWORD') or 'ENTER_SQL_SERVER_PASSWORD'
-    # Below URI may need some adjustments for driver version, based on your OS, if running locally
-    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://' + SQL_USER_NAME + '@' + SQL_SERVER + ':' + SQL_PASSWORD + '@' + SQL_SERVER + ':1433/' + SQL_DATABASE  + '?driver=ODBC+Driver+17+for+SQL+Server'
+    SQLALCHEMY_DATABASE_URI = 'mssql+pyodbc://' + SQL_user + '@' + SQL_SERVER + ':' + SQL_PASSWORD + '@' + SQL_SERVER + ':1433/' + SQL_DATABASE  + '?driver=ODBC+Driver+17+for+SQL+Server'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     ### Info for MS Authentication ###
@@ -32,10 +31,13 @@ class Config(object):
 
     CLIENT_ID = os.environ.get("CLIENT_ID")
 
-    REDIRECT_PATH = "https://udacitycms-hsggc0fbb9cpfyav.canadacentral-01.azurewebsites.net/getAToken"  # Used to form an absolute URL; must match to app's redirect_uri set in AAD
+    REDIRECT_PATH = "/getAToken"  # Used to form an absolute URL; must match to app's redirect_uri set in AAD
 
     # You can find the proper permission names from this document
     # https://docs.microsoft.com/en-us/graph/permissions-reference
     SCOPE = ["User.Read"] # Only need to read user profile for this app
 
     SESSION_TYPE = "filesystem"  # Token cache will be stored in server-side session
+
+    REDIRECT_URI = "https://udacitycms-hsggc0fbb9cpfyav.canadacentral-01.azurewebsites.net/getAToken"
+    LOGOUT_URI = "https://udacitycms-hsggc0fbb9cpfyav.canadacentral-01.azurewebsites.net/login"
