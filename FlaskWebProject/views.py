@@ -34,6 +34,7 @@ def new_post():
     if form.validate_on_submit():
         post = Post()
         post.save_changes(form, request.files['image_path'], current_user.id, new=True)
+        app.logger.info("Post successfully created.")
         return redirect(url_for('home'))
     return render_template(
         'post.html',
@@ -61,17 +62,21 @@ def post(id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
+        app.logger.info('User has been authenticated.')
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
+            app.logger.error("Invalid username or password.")
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('home')
+            
+        app.logger.info("Ther sser has successfully logged in.")
         return redirect(next_page)
     session["state"] = str(uuid.uuid4())
     auth_url = _build_auth_url(scopes=Config.SCOPE, state=session["state"])
@@ -80,11 +85,16 @@ def login():
 @app.route(Config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
 def authorized():
     if request.args.get('state') != session.get("state"):
+        app.logger.error('Authorization Failed, return to home.')
         return redirect(url_for("home"))  # No-OP. Goes back to Index page
+        
     if "error" in request.args:  # Authentication/Authorization failure
+        app.logger.error('Authentication failure.')
         return render_template("auth_error.html", result=request.args)
+        
     if request.args.get('code'):
         cache = _load_cache()
+        
         # TODO: Acquire a token from a built msal app, along with the appropriate redirect URI
         result = _build_msal_app(cache=cache).acquire_token_by_authorization_code(
             request.args['code'],
@@ -99,6 +109,9 @@ def authorized():
         user = User.query.filter_by(username="admin").first()
         login_user(user)
         _save_cache(cache)
+
+    app.logger.info('The User logged in successfully.')
+    
     return redirect(url_for('home'))
 
 @app.route('/logout')
@@ -112,6 +125,7 @@ def logout():
             Config.AUTHORITY + "/oauth2/v2.0/logout" +
             "?post_logout_redirect_uri=" + url_for("login", _external=True))
 
+    app.logger.info('The user has loged out successfully.')
     return redirect(url_for('login'))
 
 def _load_cache():
